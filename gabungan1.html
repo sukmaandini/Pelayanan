@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Layanan Terpadu - BPS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card:nth-child(1) .service-icon {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .service-card:nth-child(2) .service-icon {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+        }
+
+        .service-card:nth-child(3) .service-icon {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+        }
+
+        .service-card:nth-child(4) .service-icon {
+            background: linear-gradient(45deg, #43e97b, #38f9d7);
+        }
+
+        .service-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #333;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #43e97b, #38f9d7);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            height: 90%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .close:hover {
+            opacity: 0.7;
+        }
+
+        .modal-body {
+            height: calc(100% - 80px);
+        }
+
+        .modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .service-card {
+                padding: 20px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                height: 95%;
+                margin: 2.5% auto;
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header animate-fade-in">
+            <div class="logo">BPS</div>
+            <h1>Portal Layanan Terpadu</h1>
+            <p>Badan Pusat Statistik - Layanan Digital Terintegrasi</p>
+            <p>Akses mudah ke berbagai layanan dalam satu platform</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card animate-slide-up" style="animation-delay: 0.1s">
+                <div class="service-icon">📝</div>
+                <h3>Buku Tamu Online</h3>
+                <p>Daftarkan kunjungan Anda secara digital dengan mudah dan praktis</p>
+                <button class="btn btn-primary" onclick="openModal('modal1', 'https://docs.google.com/forms/d/e/1FAIpQLScQO5rujAwBg8r4x6Qd-uQ2P6eDP6u6UJ2ugRdWqnewy1AUlw/viewform')">
+                    Isi Buku Tamu
+                </button>
+            </div>
+
+            <div class="service-card animate-slide-up" style="animation-delay: 0.2s">
+                <div class="service-icon">📢</div>
+                <h3>Form Pengaduan</h3>
+                <p>Sampaikan keluhan, saran, atau masukan Anda untuk perbaikan layanan</p>
+                <button class="btn btn-secondary" onclick="openModal('modal2', 'https://docs.google.com/forms/d/e/1FAIpQLSd5897gzXFRK0KItQAV5K6gYnOHYfuvNaWso90EetEXML7Tkw/viewform?usp=dialog')">
+                    Buat Pengaduan
+                </button>
+            </div>
+
+            <div class="service-card animate-slide-up" style="animation-delay: 0.3s">
+                <div class="service-icon">⭐</div>
+                <h3>Penilaian Petugas</h3>
+                <p>Berikan penilaian terhadap kualitas pelayanan petugas kami</p>
+                <button class="btn btn-info" onclick="openModal('modal3', 'https://docs.google.com/forms/d/e/1FAIpQLSeP4z5bxsxToyKbRp-m2Nncoab1srG2b05wZwlCf8ivUXinvg/viewform?usp=sharing&ouid=103545986932146164034')">
+                    Nilai Petugas
+                </button>
+            </div>
+
+            <div class="service-card animate-slide-up" style="animation-delay: 0.4s">
+                <div class="service-icon">📊</div>
+                <h3>Monitoring Surat</h3>
+                <p>Pantau status dan perkembangan surat yang telah Anda ajukan</p>
+                <button class="btn btn-success" onclick="openModal('modal4', 'https://sukmaandini.github.io/monitoring-surat/')">
+                    Cek Status Surat
+                </button>
+            </div>
+        </div>
+
+        <div class="footer animate-fade-in">
+            <p><strong>Badan Pusat Statistik</strong></p>
+            <p>Melayani dengan integritas dan profesionalisme</p>
+            <p>© 2025 - Portal Layanan Digital Terpadu</p>
+        </div>
+    </div>
+
+    <!-- Modal Windows -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Buku Tamu Online</h2>
+                <button class="close" onclick="closeModal('modal1')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="iframe1" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Form Pengaduan</h2>
+                <button class="close" onclick="closeModal('modal2')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="iframe2" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Penilaian Petugas</h2>
+                <button class="close" onclick="closeModal('modal3')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="iframe3" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Monitoring Surat</h2>
+                <button class="close" onclick="closeModal('modal4')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="iframe4" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId, url) {
+            const modal = document.getElementById(modalId);
+            const iframe = modal.querySelector('iframe');
+            
+            iframe.src = url;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Add animation
+            setTimeout(() => {
+                modal.querySelector('.modal-content').style.transform = 'scale(1)';
+                modal.querySelector('.modal-content').style.opacity = '1';
+            }, 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const iframe = modal.querySelector('iframe');
+            
+            modal.style.display = 'none';
+            iframe.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const openModal = document.querySelector('.modal[style*="block"]');
+                if (openModal) {
+                    closeModal(openModal.id);
+                }
+            }
+        });
+
+        // Add loading animation for iframes
+        document.querySelectorAll('iframe').forEach(iframe => {
+            iframe.addEventListener('load', function() {
+                this.style.opacity = '1';
+            });
+        });
+
+        // Smooth scroll and intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all service cards
+        document.querySelectorAll('.service-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
