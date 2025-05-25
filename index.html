@@ -160,6 +160,7 @@
             border: none;
             cursor: pointer;
             font-size: 1em;
+            margin: 5px;
         }
 
         .btn-primary {
@@ -169,6 +170,17 @@
 
         .btn-secondary {
             background: linear-gradient(45deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #f093fb;
+            border: 2px solid #f093fb;
+        }
+
+        .btn-outline:hover {
+            background: #f093fb;
             color: white;
         }
 
@@ -258,6 +270,23 @@
             margin-bottom: 10px;
         }
 
+        .alert {
+            background: rgba(255, 235, 59, 0.9);
+            color: #8a6914;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+            font-size: 0.9em;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2em;
@@ -271,6 +300,10 @@
                 width: 95%;
                 height: 95%;
                 margin: 2.5% auto;
+            }
+
+            .button-group {
+                flex-direction: column;
             }
         }
 
@@ -328,9 +361,17 @@
                 <div class="service-icon">📢</div>
                 <h3>Form Pengaduan</h3>
                 <p>Sampaikan keluhan, saran, atau masukan Anda untuk perbaikan layanan</p>
-                <button class="btn btn-secondary" onclick="openModal('modal2', 'https://docs.google.com/forms/d/e/1FAIpQLSd5897gzXFRK0KItQAV5K6gYnOHYfuvNaWso90EetEXML7Tkw/viewform?usp=dialog')">
-                    Buat Pengaduan
-                </button>
+                <!-- <div class="alert">
+                    ⚠️ Form ini memerlukan login Google karena ada upload file wajib
+                </div> -->
+                <div class="button-group">
+                    <!-- <button class="btn btn-secondary" onclick="openModal('modal2', 'https://docs.google.com/forms/d/e/1FAIpQLSd5897gzXFRK0KItQAV5K6gYnOHYfuvNaWso90EetEXML7Tkw/viewform?usp=dialog')">
+                        Buka Form (Login Required)
+                    </button> -->
+                    <button class="btn btn-outline" onclick="openInNewTab('https://docs.google.com/forms/d/e/1FAIpQLSd5897gzXFRK0KItQAV5K6gYnOHYfuvNaWso90EetEXML7Tkw/viewform')">
+                        Isi Form Pengaduan
+                    </button>
+                </div>
             </div>
 
             <div class="service-card animate-slide-up" style="animation-delay: 0.3s">
@@ -422,6 +463,10 @@
                 modal.querySelector('.modal-content').style.transform = 'scale(1)';
                 modal.querySelector('.modal-content').style.opacity = '1';
             }, 10);
+        }
+
+        function openInNewTab(url) {
+            window.open(url, '_blank');
         }
 
         function closeModal(modalId) {
